@@ -1,11 +1,13 @@
 const addBtn = document.querySelector('#new-toy-btn')
 const toyForm = document.querySelector('.container')
 let toyContainer = document.querySelector('#toy-collection')
+
 let addToy = false
 document.addEventListener("click", handleClickEvents)
+let form = document.querySelector(".add-toy-form")
+form.addEventListener('submit', handleToyFormSubmit)
 
-//Event listener to check if the Toy has been added
-// YOUR CODE HERE
+//Event listener to check if the Toy has been added ?
 addBtn.addEventListener('click', () => {
   addToy = !addToy
   if (addToy) {
@@ -38,7 +40,7 @@ function setUpPage(){
   }
 
   function createToyCard(dataElement) {
-      //  console.log(dataElement);      
+     console.log(dataElement);      
         let toyCardHtml = ` 
         <div class="card" data-id="${dataElement.id}">
           <h2>${dataElement.name}</h2>
@@ -53,12 +55,16 @@ function setUpPage(){
   function handleClickEvents(e){
     e.preventDefault()
     if(e.target.className === 'like-btn'){
-      // console.log("this wrks");
       likeToy(e.target)
+    // }else if(e.target.className === 'submit'){
+    //   handleToyFormSubmit(e)
+    //   console.log("Clicked Submit btn");
     }else{
-      console.log("not the like btn");
+      console.log("error or other thing clicked");
     }
   }
+
+
   function likeToy(target){
     updateDOM(target)     //
     updateServer(target) //
@@ -94,9 +100,12 @@ function setUpPage(){
 
   function handleToyFormSubmit(e){
     e.preventDefault()
-    let name = e.target.querySelector('#toy-name').value
-    let imageUrl = e.target.querySelector('#toy-image').value
-
+  //  debugger
+   let name = e.target.name.value
+   let imageUrl = e.target.image.value
+   console.log("this works")
+    //let name = e.target.querySelector('#toy-name').value
+   
    fetch("http://localhost:3000/toys", {
     method: "POST",
     headers: 
@@ -112,9 +121,7 @@ function setUpPage(){
     })
   })
   .then(res => res.json())
-  .then(anything => addSingleToyToPage(anything))
-
+  .then(anything => createToyCard(anything))
  }
-
 
 
